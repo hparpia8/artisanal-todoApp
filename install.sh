@@ -2,7 +2,7 @@
 set -e
 
 # ─── Configuration ────────────────────────────────────────────────────────────
-GITHUB_REPO="hparpia/todoApp"   # Update to your GitHub username/repo
+GITHUB_REPO="hparpia8/todoApp"
 APP_NAME="TodoApp"
 INSTALL_DIR="/Applications"
 DMG_NAME="${APP_NAME}.dmg"

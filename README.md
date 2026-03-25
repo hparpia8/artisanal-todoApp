@@ -14,7 +14,7 @@ A simple, local-only todo app for macOS with a warm pen-and-paper feel.
 ## Install
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/hparpia/todoApp/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/hparpia8/todoApp/main/install.sh | bash
 ```
 
 This downloads the latest release from GitHub and copies it to `/Applications`.
@@ -40,7 +40,7 @@ This downloads the latest release from GitHub and copies it to `/Applications`.
 **Prerequisites:** Xcode 15+, Homebrew
 
 ```bash
-git clone https://github.com/hparpia/todoApp.git
+git clone https://github.com/hparpia8/todoApp.git
 cd todoApp
 ./setup.sh        # installs XcodeGen, generates TodoApp.xcodeproj
 open TodoApp.xcodeproj
