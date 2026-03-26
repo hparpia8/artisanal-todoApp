@@ -1,5 +1,11 @@
 import SwiftUI
 
+private let completedDayFormatter: DateFormatter = {
+    let f = DateFormatter()
+    f.dateFormat = "EEEE, MMMM d"
+    return f
+}()
+
 struct ContentView: View {
     @StateObject private var store = TodoStore()
     @State private var newItemText = ""
@@ -27,7 +33,7 @@ struct ContentView: View {
     var headerBar: some View {
         HStack(alignment: .center) {
             VStack(alignment: .leading, spacing: 3) {
-                Text("todo")
+                Text("ToDo")
                     .font(AppTheme.headlineFont)
                     .foregroundStyle(AppTheme.primaryText)
                 Text(Date(), format: .dateTime.weekday(.wide).month(.wide).day())
@@ -88,20 +94,23 @@ struct ContentView: View {
             ScrollView(.vertical, showsIndicators: true) {
                 VStack(spacing: 0) {
 
-                    // Completed history (oldest → newest, scrolled above)
+                    // Completed history grouped by day (oldest → newest, scrolled above)
                     if !store.completed.isEmpty {
                         completedHeader
-                        ForEach(store.completed) { item in
-                            TodoRowView(item: item) {
-                                withAnimation(.spring(response: 0.42, dampingFraction: 0.82)) {
-                                    store.toggle(item)
+                        ForEach(completedByDay, id: \.date) { group in
+                            dayHeader(group.date)
+                            ForEach(group.items) { item in
+                                TodoRowView(item: item) {
+                                    withAnimation(.spring(response: 0.42, dampingFraction: 0.82)) {
+                                        store.toggle(item)
+                                    }
                                 }
+                                // slides up into completed, slides down out when restored
+                                .transition(.asymmetric(
+                                    insertion: .opacity.combined(with: .move(edge: .bottom)),
+                                    removal: .opacity.combined(with: .move(edge: .top))
+                                ))
                             }
-                            // slides up into completed, slides down out when restored
-                            .transition(.asymmetric(
-                                insertion: .opacity.combined(with: .move(edge: .bottom)),
-                                removal: .opacity.combined(with: .move(edge: .top))
-                            ))
                         }
                         nowDivider
                     }
@@ -149,6 +158,18 @@ struct ContentView: View {
         }
     }
 
+    var completedByDay: [(date: Date, items: [TodoItem])] {
+        let calendar = Calendar.current
+        var byDay: [Date: [TodoItem]] = [:]
+        for item in store.completed {
+            let day = calendar.startOfDay(for: item.completedAt ?? item.createdAt)
+            byDay[day, default: []].append(item)
+        }
+        return byDay.keys.sorted().map { date in
+            (date: date, items: byDay[date]!)
+        }
+    }
+
     var completedHeader: some View {
         HStack(spacing: 10) {
             Text("completed")
@@ -164,12 +185,27 @@ struct ContentView: View {
         .padding(.bottom, 8)
     }
 
+    func dayHeader(_ date: Date) -> some View {
+        HStack(spacing: 10) {
+            Text(completedDayFormatter.string(from: date))
+                .font(AppTheme.monoFont)
+                .tracking(1.5)
+                .foregroundStyle(AppTheme.mutedText)
+            Rectangle()
+                .fill(AppTheme.paperLine)
+                .frame(height: 0.5)
+        }
+        .padding(.horizontal, AppTheme.rowPaddingH)
+        .padding(.top, 16)
+        .padding(.bottom, 4)
+    }
+
     var nowDivider: some View {
         HStack(spacing: 10) {
             Rectangle()
                 .fill(AppTheme.paperLine)
                 .frame(height: 0.5)
-            Text("now")
+            Text("Today")
                 .font(AppTheme.monoFont)
                 .tracking(1.5)
                 .foregroundStyle(AppTheme.accent)

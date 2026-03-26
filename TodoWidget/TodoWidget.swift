@@ -87,13 +87,6 @@ struct TodoWidgetEntryView: View {
                     .font(.system(size: 10, design: .monospaced))
                     .foregroundStyle(Color("AppMutedText"))
             }
-            // Opens the main app focused on the input bar
-            Link(destination: URL(string: "todoapp://add")!) {
-                Image(systemName: "plus")
-                    .font(.system(size: 11, weight: .medium))
-                    .foregroundStyle(Color("AppAccent"))
-                    .frame(width: 22, height: 22)
-            }
         }
         .padding(.horizontal, 12)
         .padding(.top, 10)
