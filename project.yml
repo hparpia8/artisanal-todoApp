@@ -23,6 +23,8 @@ schemes:
       config: Debug
     test:
       config: Debug
+      targets:
+        - TodoAppTests
     profile:
       config: Release
     analyze:
@@ -48,6 +50,21 @@ targets:
     dependencies:
       - target: TodoWidgetExtension
         embed: true
+
+  TodoAppTests:
+    type: bundle.unit-test
+    platform: macOS
+    deploymentTarget: "15.0"
+    sources:
+      - path: TodoAppTests
+    dependencies:
+      - target: TodoApp
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.artisanal.todo.tests
+        CODE_SIGN_STYLE: Automatic
+        CODE_SIGN_IDENTITY: "-"
+        GENERATE_INFOPLIST_FILE: YES
 
   TodoWidgetExtension:
     type: app-extension
