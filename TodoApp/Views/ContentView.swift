@@ -115,6 +115,9 @@ struct ContentView: View {
                         nowDivider
                     }
 
+                    // Anchor — scroll here on appear so completed section is hidden above
+                    Color.clear.frame(height: 0).id("pending-top")
+
                     // Active / pending items
                     if store.pending.isEmpty {
                         emptyState
@@ -147,12 +150,12 @@ struct ContentView: View {
             }
             .onAppear {
                 DispatchQueue.main.async {
-                    proxy.scrollTo("bottom", anchor: .bottom)
+                    proxy.scrollTo("pending-top", anchor: .top)
                 }
             }
             .onChange(of: scrollTrigger) { _ in
                 withAnimation(.spring(response: 0.4, dampingFraction: 0.85)) {
-                    proxy.scrollTo("bottom", anchor: .bottom)
+                    proxy.scrollTo("pending-top", anchor: .top)
                 }
             }
         }
@@ -172,10 +175,14 @@ struct ContentView: View {
 
     var completedHeader: some View {
         HStack(spacing: 10) {
-            Text("completed")
+            Rectangle()
+                .fill(AppTheme.paperLine)
+                .frame(height: 0.5)
+            Text("Completed")
                 .font(AppTheme.monoFont)
                 .tracking(1.5)
                 .foregroundStyle(AppTheme.mutedText)
+                .fixedSize()
             Rectangle()
                 .fill(AppTheme.paperLine)
                 .frame(height: 0.5)
@@ -187,10 +194,14 @@ struct ContentView: View {
 
     func dayHeader(_ date: Date) -> some View {
         HStack(spacing: 10) {
+            Rectangle()
+                .fill(AppTheme.paperLine)
+                .frame(height: 0.5)
             Text(completedDayFormatter.string(from: date))
                 .font(AppTheme.monoFont)
                 .tracking(1.5)
                 .foregroundStyle(AppTheme.mutedText)
+                .fixedSize()
             Rectangle()
                 .fill(AppTheme.paperLine)
                 .frame(height: 0.5)

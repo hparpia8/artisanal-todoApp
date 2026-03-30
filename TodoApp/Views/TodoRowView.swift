@@ -13,31 +13,27 @@ struct TodoRowView: View {
         HStack(spacing: 0) {
             // Main row — entire area toggles the item
             Button(action: onToggle) {
-                HStack(alignment: .top, spacing: 12) {
+                HStack(alignment: .center, spacing: 12) {
                     checkbox
-                        .padding(.top, 1)
 
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(item.title)
-                            .font(AppTheme.bodyFont)
-                            .foregroundStyle(isCompleted ? AppTheme.completedText : AppTheme.primaryText)
-                            .strikethrough(isCompleted, color: AppTheme.completedText)
-                            .lineLimit(nil)
-                            .multilineTextAlignment(.leading)
-                            .animation(.easeInOut(duration: 0.2), value: isCompleted)
-
-                        if isCompleted, let completedAt = item.completedAt {
-                            Text(completedAt, format: .dateTime.month(.abbreviated).day().hour().minute())
-                                .font(AppTheme.captionFont)
-                                .foregroundStyle(AppTheme.completedText.opacity(0.55))
-                                .transition(.opacity.combined(with: .move(edge: .top)))
-                        }
-                    }
+                    Text(item.title)
+                        .font(AppTheme.bodyFont)
+                        .foregroundStyle(isCompleted ? AppTheme.completedText : AppTheme.primaryText)
+                        .strikethrough(isCompleted, color: AppTheme.completedText)
+                        .lineLimit(nil)
+                        .multilineTextAlignment(.leading)
+                        .animation(.easeInOut(duration: 0.2), value: isCompleted)
 
                     Spacer()
 
-                    // Timestamp fades in on hover for active items
-                    if !isCompleted {
+                    // Timestamp fades in on hover — completedAt for done items, createdAt for pending
+                    if isCompleted, let completedAt = item.completedAt {
+                        Text(completedAt, format: .dateTime.hour().minute())
+                            .font(AppTheme.captionFont)
+                            .foregroundStyle(AppTheme.completedText.opacity(0.55))
+                            .opacity(isHovered ? 1 : 0)
+                            .animation(.easeInOut(duration: 0.15), value: isHovered)
+                    } else if !isCompleted {
                         Text(item.createdAt, format: .dateTime.hour().minute())
                             .font(AppTheme.captionFont)
                             .foregroundStyle(AppTheme.mutedText.opacity(0.7))
