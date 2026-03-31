@@ -45,7 +45,6 @@ struct AppTheme {
     // Typography
     static let headlineFont: Font = .system(size: 22, weight: .light, design: .serif)
     static let bodyFont:     Font = .system(size: 15, weight: .regular, design: .serif)
-    static let inputFont:    Font = .system(size: 15, weight: .regular, design: .serif)
     static let captionFont:  Font = .system(size: 10, weight: .regular)
     static let monoFont:     Font = .system(size: 9, weight: .semibold, design: .monospaced)
 

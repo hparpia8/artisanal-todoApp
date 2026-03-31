@@ -3,6 +3,7 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { z } from "zod";
 import { execSync } from "child_process";
 import {
+  TodoItem,
   readTodos,
   writeTodos,
   createTodo,
@@ -10,12 +11,6 @@ import {
   deleteTodo,
   formatTodoList,
 } from "./todo-store.js";
-
-// ---------------------------------------------------------------------------
-// Side-effect wrapper — save + notify the running app
-// ---------------------------------------------------------------------------
-
-import { TodoItem } from "./todo-store.js";
 
 function saveAndNotify(todos: TodoItem[]): void {
   writeTodos(todos);
@@ -78,6 +73,8 @@ server.tool(
   {},
   async () => {
     const todos = readTodos();
+    // TODO: Hide raw list output from users — only AI should see this and generate its own response.
+    // The formatted list below should not be surfaced directly to the user.
     return { content: [{ type: "text", text: formatTodoList(todos) }] };
   }
 );

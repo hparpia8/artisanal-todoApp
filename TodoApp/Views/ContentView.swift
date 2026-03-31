@@ -174,58 +174,30 @@ struct ContentView: View {
     }
 
     var completedHeader: some View {
-        HStack(spacing: 10) {
-            Rectangle()
-                .fill(AppTheme.paperLine)
-                .frame(height: 0.5)
-            Text("Completed")
-                .font(AppTheme.monoFont)
-                .tracking(1.5)
-                .foregroundStyle(AppTheme.mutedText)
-                .fixedSize()
-            Rectangle()
-                .fill(AppTheme.paperLine)
-                .frame(height: 0.5)
-        }
-        .padding(.horizontal, AppTheme.rowPaddingH)
-        .padding(.top, 24)
-        .padding(.bottom, 8)
+        ruledLabel("Completed", color: AppTheme.mutedText, top: 24, bottom: 8)
     }
 
     func dayHeader(_ date: Date) -> some View {
-        HStack(spacing: 10) {
-            Rectangle()
-                .fill(AppTheme.paperLine)
-                .frame(height: 0.5)
-            Text(completedDayFormatter.string(from: date))
-                .font(AppTheme.monoFont)
-                .tracking(1.5)
-                .foregroundStyle(AppTheme.mutedText)
-                .fixedSize()
-            Rectangle()
-                .fill(AppTheme.paperLine)
-                .frame(height: 0.5)
-        }
-        .padding(.horizontal, AppTheme.rowPaddingH)
-        .padding(.top, 16)
-        .padding(.bottom, 4)
+        ruledLabel(completedDayFormatter.string(from: date), color: AppTheme.mutedText, top: 16, bottom: 4)
     }
 
     var nowDivider: some View {
+        ruledLabel("Today", color: AppTheme.accent, top: 18, bottom: 18)
+    }
+
+    private func ruledLabel(_ text: String, color: Color, top: CGFloat, bottom: CGFloat) -> some View {
         HStack(spacing: 10) {
-            Rectangle()
-                .fill(AppTheme.paperLine)
-                .frame(height: 0.5)
-            Text("Today")
+            Rectangle().fill(AppTheme.paperLine).frame(height: 0.5)
+            Text(text)
                 .font(AppTheme.monoFont)
                 .tracking(1.5)
-                .foregroundStyle(AppTheme.accent)
-            Rectangle()
-                .fill(AppTheme.paperLine)
-                .frame(height: 0.5)
+                .foregroundStyle(color)
+                .fixedSize()
+            Rectangle().fill(AppTheme.paperLine).frame(height: 0.5)
         }
         .padding(.horizontal, AppTheme.rowPaddingH)
-        .padding(.vertical, 18)
+        .padding(.top, top)
+        .padding(.bottom, bottom)
     }
 
     var emptyState: some View {
@@ -252,7 +224,7 @@ struct ContentView: View {
 
             TextField("add a task...", text: $newItemText)
                 .textFieldStyle(.plain)
-                .font(AppTheme.inputFont)
+                .font(AppTheme.bodyFont)
                 .foregroundStyle(AppTheme.primaryText)
                 .focused($inputFocused)
                 .onSubmit { addItem() }

@@ -32,10 +32,6 @@ const TODO_DIR = path.join(
 );
 const TODO_PATH = path.join(TODO_DIR, "todos.json");
 
-export function getStorePath(): string {
-  return TODO_PATH;
-}
-
 export function readTodos(filePath: string = TODO_PATH): TodoItem[] {
   try {
     const data = fs.readFileSync(filePath, "utf-8");
@@ -159,23 +155,21 @@ export function deleteTodo(
 export function formatTodoList(todos: TodoItem[]): string {
   if (todos.length === 0) return "No todos found.";
 
-  const pending = todos.filter((t) => !t.isCompleted);
-  const completed = todos.filter((t) => t.isCompleted);
+  const hasPending = todos.some((t) => !t.isCompleted);
+  const hasCompleted = todos.some((t) => t.isCompleted);
   const lines: string[] = [];
 
-  if (pending.length > 0) {
+  if (hasPending) {
     lines.push("**Pending:**");
-    for (const t of pending) {
-      const num = todos.indexOf(t) + 1;
-      lines.push(`${num}. - [ ] ${t.title}`);
+    for (const [i, t] of todos.entries()) {
+      if (!t.isCompleted) lines.push(`${i + 1}. - [ ] ${t.title}`);
     }
   }
-  if (completed.length > 0) {
+  if (hasCompleted) {
     if (lines.length > 0) lines.push("");
     lines.push("**Completed:**");
-    for (const t of completed) {
-      const num = todos.indexOf(t) + 1;
-      lines.push(`${num}. - [x] ${t.title}`);
+    for (const [i, t] of todos.entries()) {
+      if (t.isCompleted) lines.push(`${i + 1}. - [x] ${t.title}`);
     }
   }
 
