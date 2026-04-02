@@ -84,18 +84,18 @@ The app refreshes live whenever Claude makes a change — no manual sync needed.
 
 The MCP server and a Node.js runtime are bundled inside the app — no extra installs needed.
 
-**Add to Claude Desktop** — open `~/Library/Application Support/Claude/claude_desktop_config.json` and add:
+**Add to Claude Desktop** — open `~/Library/Application Support/Claude/claude_desktop_config.json` and merge the following `mcpServers` key into your existing config:
 
 ```json
-{
-  "mcpServers": {
-    "artisanal-todo": {
-      "command": "/Applications/TodoApp.app/Contents/Resources/node",
-      "args": ["/Applications/TodoApp.app/Contents/Resources/mcp-server/dist/index.js"]
-    }
+"mcpServers": {
+  "artisanal-todo": {
+    "command": "/Applications/TodoApp.app/Contents/Resources/node",
+    "args": ["/Applications/TodoApp.app/Contents/Resources/mcp-server/dist/index.js"]
   }
 }
 ```
+
+> **Note:** Do not paste this as a separate `{ }` block. Add the `"mcpServers"` key inside your existing JSON object, alongside any other top-level keys like `"preferences"`.
 
 Restart Claude Desktop after saving.
 
