@@ -54,7 +54,7 @@ const todoQuerySchema = {
 server.tool(
   "add_todo",
   "Add a new pending item to the Artisanal Todo app",
-  { title: z.string().min(1).describe("The task to add") },
+  { title: z.string().min(1).max(500).describe("The task to add") },
   async ({ title }) => {
     const todos = readTodos();
     const item = createTodo(title);

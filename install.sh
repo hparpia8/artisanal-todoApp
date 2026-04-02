@@ -42,7 +42,7 @@ if ! curl -fsSL --progress-bar "${RELEASE_URL}" -o "${TMP_DMG}"; then
 fi
 
 echo "→ Mounting disk image..."
-MOUNT_OUTPUT=$(hdiutil attach "${TMP_DMG}" -nobrowse -noverify 2>&1)
+MOUNT_OUTPUT=$(hdiutil attach "${TMP_DMG}" -nobrowse 2>&1)
 MOUNT_POINT=$(echo "$MOUNT_OUTPUT" | awk 'END {print $NF}')
 
 if [ ! -d "${MOUNT_POINT}/${APP_NAME}.app" ]; then
@@ -63,11 +63,11 @@ echo "→ Cleaning up..."
 hdiutil detach "${MOUNT_POINT}" -quiet
 rm -rf "${TMP_DIR}"
 
-# Remove quarantine attribute if present
-xattr -dr com.apple.quarantine "${INSTALL_DIR}/${APP_NAME}.app" 2>/dev/null || true
-
 echo ""
 echo "  ✓ Artisanal Todo installed to /Applications"
+echo ""
+echo "  ℹ  First launch: if macOS blocks the app, go to"
+echo "     System Settings → Privacy & Security → click \"Open Anyway\"."
 echo ""
 echo "  To add the macOS widget:"
 echo "    Right-click your desktop → Edit Widgets → search \"Artisanal Todo\""

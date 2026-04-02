@@ -16,13 +16,13 @@ A simple, local-only macOS todo app with a warm pen-and-paper feel.
 
 **Option 1 — DMG:** Grab the latest `TodoApp.dmg` from the [Releases page](https://github.com/hparpia8/todoApp/releases), open it, and drag the app to `/Applications`.
 
-**Option 2 — curl:**
+**Option 2 — Install script:**
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/hparpia8/todoApp/main/install.sh | bash
 ```
 
-Downloads the latest release and installs the app to `/Applications` automatically.
+Downloads the latest release and installs the app to `/Applications`.
 
 ---
 
@@ -42,6 +42,8 @@ Downloads the latest release and installs the app to `/Applications` automatical
 1. Right-click your macOS desktop → **Edit Widgets**
 2. Search for **Artisanal Todo**
 3. Choose Small (3 tasks), Medium (5), or Large (10)
+
+> **Note:** The widget requires the app to be code-signed with an Apple Developer account to display live data. Without signing, the widget shows placeholder tasks. The app and MCP server work fully regardless.
 
 ---
 
@@ -95,7 +97,7 @@ Any MCP-compatible client works. Point it at `node /path/to/todoApp/mcp-server/d
 All todos are stored locally in a SQLite database at:
 
 ```
-~/Library/Application Support/ArtisanalTodo/todos.db
+~/Library/Containers/com.artisanal.todo/Data/Library/Application Support/ArtisanalTodo/todos.db
 ```
 
 Nothing is synced to the cloud. You can back up this file at any time.

@@ -95,42 +95,13 @@ function rowToItem(row: TodoRow): TodoItem {
   };
 }
 
-// Migrate from todos.json to todos.db on first launch (runs once, then skips).
-function migrateFromJSON(db: Database.Database, dbPath: string): void {
-  const count = (
-    db.prepare("SELECT COUNT(*) as n FROM todos").get() as { n: number }
-  ).n;
-  if (count > 0) return;
-
-  const jsonPath = path.join(path.dirname(dbPath), "todos.json");
-  if (!fs.existsSync(jsonPath)) return;
-
-  try {
-    const items: TodoItem[] = JSON.parse(fs.readFileSync(jsonPath, "utf-8"));
-    const insert = db.prepare(`
-      INSERT INTO todos (id, title, createdAt, completedAt, isCompleted, sortOrder)
-      VALUES (@id, @title, @createdAt, @completedAt, @isCompleted, @sortOrder)
-    `);
-    db.transaction((todos: TodoItem[]) => {
-      todos.forEach((item, i) =>
-        insert.run({ ...item, isCompleted: item.isCompleted ? 1 : 0, sortOrder: i })
-      );
-    })(items);
-    fs.renameSync(jsonPath, jsonPath + ".migrated");
-    console.error(`[todo-store] Migrated ${items.length} items from JSON to SQLite`);
-  } catch {
-    // Non-fatal — start with empty DB if migration fails
-  }
-}
-
 // ---------------------------------------------------------------------------
-// Persistence — public API (same signatures as before)
+// Persistence — public API
 // ---------------------------------------------------------------------------
 
 export function readTodos(dbPath: string = TODO_PATH): TodoItem[] {
   try {
     const db = openDb(dbPath);
-    migrateFromJSON(db, dbPath);
     const rows = db
       .prepare("SELECT * FROM todos ORDER BY sortOrder ASC")
       .all() as TodoRow[];
