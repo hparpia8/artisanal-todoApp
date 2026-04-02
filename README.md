@@ -20,12 +20,12 @@ Most todo apps are cluttered, cloud-dependent, or designed for teams. Artisanal 
 
 ## Download
 
-**Option 1 — DMG:** Grab the latest `TodoApp.dmg` from the [Releases page](https://github.com/hparpia8/todoApp/releases), open it, and drag the app to `/Applications`.
+**Option 1 — DMG:** Grab the latest `TodoApp.dmg` from the [Releases page](https://github.com/hparpia8/artisanal-todoApp/releases), open it, and drag the app to `/Applications`.
 
 **Option 2 — Install script:**
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/hparpia8/todoApp/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/hparpia8/artisanal-todoApp/main/install.sh | bash
 ```
 
 Downloads the latest release and installs the app to `/Applications`.
@@ -144,7 +144,7 @@ Nothing is synced to the cloud. You can back up this file at any time.
 **Prerequisites:** Xcode 16+, Homebrew, Node.js 18+
 
 ```bash
-git clone https://github.com/hparpia8/todoApp.git
+git clone https://github.com/hparpia8/artisanal-todoApp.git
 cd todoApp
 make setup   # installs XcodeGen and generates the Xcode project
 make open    # opens the project in Xcode

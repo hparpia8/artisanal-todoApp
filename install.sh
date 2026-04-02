@@ -2,7 +2,7 @@
 set -e
 
 # ─── Configuration ────────────────────────────────────────────────────────────
-GITHUB_REPO="hparpia8/todoApp"
+GITHUB_REPO="hparpia8/artisanal-todoApp"
 APP_NAME="TodoApp"
 INSTALL_DIR="/Applications"
 DMG_NAME="${APP_NAME}.dmg"
@@ -43,7 +43,7 @@ fi
 
 echo "→ Mounting disk image..."
 MOUNT_OUTPUT=$(hdiutil attach "${TMP_DMG}" -nobrowse 2>&1)
-MOUNT_POINT=$(echo "$MOUNT_OUTPUT" | awk 'END {print $NF}')
+MOUNT_POINT=$(echo "$MOUNT_OUTPUT" | tail -1 | sed 's/.*\(\/Volumes\/.*\)/\1/')
 
 if [ ! -d "${MOUNT_POINT}/${APP_NAME}.app" ]; then
     echo "  ✗ Could not find ${APP_NAME}.app in the disk image."
