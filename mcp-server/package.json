@@ -1,6 +1,6 @@
 {
   "name": "artisanal-todo-mcp",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "MCP server for Artisanal Todo — lets AI agents add, list, complete, and delete todos",
   "type": "module",
   "main": "dist/index.js",
